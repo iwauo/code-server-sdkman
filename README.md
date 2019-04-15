@@ -1,13 +1,13 @@
 code-server-sdkman
 ===================
 
-A Docker build file based on the offecial [code-server](https://github.com/codercom/code-server) image adding [sdkman](https://sdkman.io/), which enables to manage Java based SDKs from the code-server terminal:
+A Docker build file based on the offecial [code-server](https://github.com/codercom/code-server) image adding [sdkman](https://sdkman.io/), which enables to manage JDK based SDKs or tools from the code-server terminal:
 
 ![](./doc/img/sdkman-on-terminal.png)
 
 
-Preinstalling SDKs
--------------------
+Bundling SDKs with your image
+-------------------------------
 If you want to bundle some SDKs to your image, extend this build file as follows:
 
 ```dockerfile
