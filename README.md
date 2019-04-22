@@ -6,31 +6,27 @@ A Docker build file based on the offecial [code-server](https://github.com/coder
 ![](./doc/img/sdkman-on-terminal.png)
 
 
-Bundling SDKs with your image
+Build-time arguments
 -------------------------------
-If you want to bundle some SDKs to your image, extend this build file as follows:
+You can customize the image with the following arguments:
 
-```dockerfile
-FROM iwauo/code-server-sdkman
+**CODE_SERVER_VERSION**
+: The version number of the base image
 
-ARG user="developer"
-ARG home=/home/$user
+**SDKMAN_LIBS**
+: A whitespace separated list of the preinstalled SDK libraries. Each entries is written in the following form: **"library_name":"library_version"**
 
-USER $user
-WORKDIR $home
+**VSCODE_EXTENSIONS**
+: A whitespace separated list of the vscode extensions which are bundled the image. Each entries is written in the following form: **"provider:extension_name"** (This is shown in the top of the extension's page)
+  ![](./doc/img/extension_id.png)
 
-ARG jdk=8.0.202-zulu
-ARG gradle=5.3.1
-ARG kotlin=1.3.30
-SHELL ["/bin/bash", "-c"]
+The following script is an example usage of these arugments:
 
-RUN source "$home/.sdkman/bin/sdkman-init.sh" \
- && sdk install java $jdk \
- && sdk install gradle $gradle \
- && sdk install kotlin $kotlin
-
-ENTRYPOINT ["dumb-init", "code-server"]
-
+```bash
+docker build ../image_context \
+  --build-arg CODE_SERVER_VERSION="1.868" \
+  --build-arg SDKMAN_LIBS="java:8.0.212-zulu gradle:5.3.1" \
+  --build-arg VSCODE_EXTENSIONS="redhat.java vscjava.vscode-java-debug" \
+  -t custom-code-server:latest
 ```
-
 
