@@ -4,7 +4,11 @@ PROJECT_NAME=iwauo
 IMAGE_NAME=code-server-sdkman
 REGISTRY=
 #REGISTRY=gcr.io/
-VSCODE_EXTENSIONS="shan.code-settings-sync"
+VSCODE_EXTENSIONS="shan.code-settings-sync \
+  donjayamanne.githistory \
+  streetsidesoftware.code-spell-checker \
+  VisualStudioExptTeam.vscodeintellicode \
+  redhat.vscode-yaml"
 #VSCODE_EXTENSIONS="shan.code-settings-sync eamodio.gitlens"
 SDKMAN_LIBS=
 #SDKMAN_LIBS="java:8.0.212-zulu gradle:5.3.1"
