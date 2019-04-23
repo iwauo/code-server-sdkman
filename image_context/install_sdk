@@ -6,6 +6,6 @@ for sdk in "$@"
 do
     name=${sdk%:*}
     version=${sdk#*:}
-    sdk install $name $version
+    sdk install $name $version || exit 1
 done
 
