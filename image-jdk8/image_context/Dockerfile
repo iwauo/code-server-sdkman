@@ -15,7 +15,6 @@ RUN ./install_extension \
     vscjava.vscode-java-dependency \
     vscjava.vscode-spring-boot-dashboard \
     Pivotal.vscode-spring-boot \
-    shengchen.vscode-checkstyle \
     dgileadi.java-decompiler
 
 COPY --chown=2000:2000 settings.json /home/developer/.local/share/code-server/User/settings.json

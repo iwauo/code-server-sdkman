@@ -2,21 +2,37 @@
 
 VSCODE_EXTENSION_DIR="/home/developer/.local/share/code-server/extensions"
 MARKETPLACE_URL="https://marketplace.visualstudio.com/_apis/public/gallery"
-REQUEST_INTERVAL=90
-TAKE_INTERVAL_PER=3
-i=0
-for extension in "$@"
-do
-	i=$((i+1))
-    publisher=${extension%.*}
-    name=${extension#*.}
-    dir="$VSCODE_EXTENSION_DIR/${publisher}_${name}"
-    url="$MARKETPLACE_URL/publishers/$publisher/vsextensions/$name/latest/vspackage"
-    echo "Installing $i/$# $extension ($url) to $dir"
-    mkdir -p $dir && (curl -fJL --retry 5 $url | bsdtar --strip-components=1 -xf - -C $dir extension) || exit 1
-	[[ $((i % TAKE_INTERVAL_PER)) = 0 ]] \
-        && echo "Wainting a mininute as there is the limit of the number of the requests." \
-        && sleep $REQUEST_INTERVAL \
-        || true
-done
+RETRY_INTERVAL=30
+MAX_RETRY_COUNT=3
+EXTENSIONS="$@"
+
+main() {
+  for extension in $EXTENSIONS; do
+    local retry=0
+    local success=
+    while [ -z $success ]; do
+      retry=$((retry+1))
+      [[ $retry -gt MAX_RETRY_COUNT ]] \
+        && echo 'Exceeded the retry limit' && exit 1
+      install $extension \
+        && success='OK' \
+        || sleep $RETRY_INTERVAL
+    done
+  done
+}
+
+install() {
+  local extension=$1
+  local publisher=${extension%.*}
+  local name=${extension#*.}
+  local dir="$VSCODE_EXTENSION_DIR/${publisher}_${name}"
+  local url="$MARKETPLACE_URL/publishers/$publisher/vsextensions/$name/latest/vspackage"
+
+  echo "Installing an extension: $extension from $url to $dir"
+  mkdir -p $dir && (
+    curl -fJL --retry 5 $url | bsdtar --strip-components=1 -xf - -C $dir extension
+  )
+}
+
+main
 
