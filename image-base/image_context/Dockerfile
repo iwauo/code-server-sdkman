@@ -39,12 +39,7 @@ RUN (curl -s "https://get.sdkman.io" | bash) \
 } > ~/.sdkman/etc/config
 
 # NVM
-RUN (curl -s https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash) \
-&& { \
-  echo 'export NVM_DIR="$HOME/.nvm"'; \
-  echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'; \
-  echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"'; \
-} > ~/.bashrc
+RUN (curl -s https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash)
 
 # preinstalled SDKs
 ARG SDKMAN_LIBS=
@@ -63,6 +58,21 @@ ARG VSCODE_EXTENSIONS=
 COPY --chown=2000:2000 install_extension ./
 RUN chmod 755 ./install_extension \
  && ./install_extension $VSCODE_EXTENSIONS
+
+# .bashrc
+RUN { \
+  echo '## NVM'; \
+  echo 'export NVM_DIR="$HOME/.nvm"'; \
+  echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'; \
+  echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"'; \
+  echo '## SDKMAN'; \
+  echo 'export SDKMAN_DIR="$HOME/.sdkman"'; \
+  echo '[[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"'; \
+  echo ''; \
+  echo "export PS1='\[\033[01;34m\]\$?|\[\033[01;32m\]\W> \[\033[00m\]'"; \
+  echo 'export CLICOLOR=1'; \
+  echo 'export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx'; \
+} > ~/.bashrc
 
 ENTRYPOINT ["dumb-init", "code-server"]
 
