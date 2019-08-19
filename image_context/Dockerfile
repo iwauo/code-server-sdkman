@@ -38,11 +38,25 @@ RUN (curl -s "https://get.sdkman.io" | bash) \
   echo "sdkman_insecure_ssl=true"; \
 } > ~/.sdkman/etc/config
 
+# NVM
+RUN (curl -s https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash) \
+&& { \
+  echo 'export NVM_DIR="$HOME/.nvm"'; \
+  echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'; \
+  echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"'; \
+} > ~/.bashrc
+
 # preinstalled SDKs
 ARG SDKMAN_LIBS=
 COPY --chown=2000:2000 install_sdk ./
 RUN chmod 755 ./install_sdk \
  && ./install_sdk $SDKMAN_LIBS
+
+# NODE
+ARG NODE_VERSIONS=
+COPY --chown=2000:2000 install_node ./
+RUN chmod 755 ./install_sdk \
+ && ./install_node $NODE_VERSIONS
 
 # VS-code extensions
 ARG VSCODE_EXTENSIONS=

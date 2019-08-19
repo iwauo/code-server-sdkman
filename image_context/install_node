@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+for node_version in "$@"
+do
+    nvm install $node_version || exit 1
+done
+
