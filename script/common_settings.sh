@@ -1,11 +1,10 @@
-VERSION=1.0.3
-CODE_SERVER_VERSION=1.939
+VERSION=1.0.4
+CODE_SERVER_VERSION=1.1156-vsc1.33.1
 PROJECT_NAME=iwauo
 IMAGE_NAME=code-server-sdkman
 REGISTRY=
 #REGISTRY=gcr.io/
-VSCODE_EXTENSIONS="shan.code-settings-sync \
-  donjayamanne.githistory \
+VSCODE_EXTENSIONS="donjayamanne.githistory \
   streetsidesoftware.code-spell-checker \
   VisualStudioExptTeam.vscodeintellicode \
   redhat.vscode-yaml"
