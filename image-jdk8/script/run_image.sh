@@ -7,7 +7,7 @@ docker rm -f $IMAGE_NAME || true
 docker run \
   --rm \
   --name $IMAGE_NAME \
-  -it -p 8443:8443 \
+  -it -p 8000:8080 \
   -v "${PWD}:/home/developer/project:delegated" \
   $CURRENT \
   --allow-http \

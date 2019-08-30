@@ -1,13 +1,22 @@
-ARG CODE_SERVER_VERSION="latest"
-FROM codercom/code-server:$CODE_SERVER_VERSION
+FROM ubuntu:18.04
 
 USER root
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
     tree \
     zip \
     unzip \
-    bsdtar
+    bsdtar \
+    openssl \
+    net-tools \
+    git \
+    locales \
+    sudo \
+    dumb-init \
+    vim \
+    curl \
+    wget
 
 ARG USER="developer"
 ARG HOME=/home/$USER
@@ -25,6 +34,15 @@ RUN addgroup  \
       --home $HOME \
       $USER \
 && (echo "$USER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/nopasswd)
+
+# CODE-SERVER
+ARG CODE_SERVER_VERSION
+RUN (cd /bin \
+&& curl -L "https://github.com/cdr/code-server/releases/download/${CODE_SERVER_VERSION}/code-server${CODE_SERVER_VERSION}-linux-x86_64.tar.gz" \
+ | tar -xz \
+      --strip-components 1 \
+      "code-server${CODE_SERVER_VERSION}-linux-x86_64/code-server"\
+&& chmod 755 code-server)
 
 USER $USER
 WORKDIR $HOME

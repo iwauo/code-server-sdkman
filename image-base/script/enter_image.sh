@@ -10,8 +10,6 @@ docker run \
   --name $IMAGE_NAME \
   --rm \
   -it \
-  -p 8000:8080 \
   -v "${PWD}:/home/developer/project" \
-  $CURRENT \
-  --allow-http \
-  --no-auth
+  --entrypoint /bin/bash \
+  $CURRENT
