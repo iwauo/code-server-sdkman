@@ -1,4 +1,4 @@
-FROM iwauo/code-server-sdkman:1.1.0
+FROM iwauo/code-server-sdkman:1.1.1
 
 RUN ./install_node \
     v10.16.3
