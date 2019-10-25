@@ -1,11 +1,11 @@
-FROM iwauo/code-server-sdkman:1.1.1
+FROM iwauo/code-server-sdkman:1.1.2
 
 RUN ./install_node \
     v10.16.3
 
 RUN ./install_sdk \
-    java:8.0.222-zulu \
-    gradle:5.6.1
+    java:8.0.232-zulu \
+    gradle:5.6.3
 
 RUN ./install_extension \
     redhat.java \
